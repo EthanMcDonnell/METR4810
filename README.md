@@ -14,10 +14,14 @@ https://github.com/espressif/vscode-esp-idf-extension/blob/master/docs/tutorial/
 ## Note:
 After setting up project this METR4810 project should be cloned into your esp folder or equivalent name.
 In my esp folder I have:
+
+```
 esp
 ├── esp-idf
 ├── hello_world
 └── METR4810_ESP_Code           This is the folder this repository should be cloned into.
+```
+
 
 
 ## How to use example project

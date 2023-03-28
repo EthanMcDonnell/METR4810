@@ -31,7 +31,7 @@ typedef enum
 
 } RobotState;
 
-extern read_from_monitor();
+extern char read_from_monitor();
 extern char *robot_state_strings[];
 
 extern void init_monitor();

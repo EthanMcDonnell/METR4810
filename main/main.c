@@ -29,8 +29,7 @@ static void configure_led(void){
 
 void app_main(void)
 {
-    printf("Hello World\n")
-    chip_info_printout();
+    printf("Hello World\n");
     configure_led();
     init_monitor();
     while (1)
@@ -38,7 +37,6 @@ void app_main(void)
         char inputc = read_from_monitor(); //Pauses until reads char
         robot_state = input_handling(inputc);
         printf("%s\n", robot_state_strings[(int) robot_state]);
-
         // printf("Turning the LED %s!\n", s_led_state == true ? "ON" : "OFF");
         gpio_set_level(BLINK_GPIO, s_led_state); //blink led
         s_led_state = !s_led_state; //toggle LED state

@@ -68,7 +68,7 @@ void app_main(void)
     chip_info_printout();
     configure_led();
     while(1){
-        ESP_LOGI(TAG, "Turning the LED %s!", s_led_state == true ? "ON" : "OFF");
+        printf("Turning the LED %s!", s_led_state == true ? "ON" : "OFF");
         blink_led();
         /* Toggle the LED state */
         s_led_state = !s_led_state;

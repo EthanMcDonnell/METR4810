@@ -29,7 +29,7 @@ static void configure_led(void){
 
 void app_main(void)
 {
-    printf("Hello World\n");
+    printf("Hello World it's Chelsea\n");
     configure_led();
     init_monitor();
     while (1)

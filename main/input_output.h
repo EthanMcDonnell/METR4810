@@ -26,8 +26,8 @@ typedef enum
     Still = 0,
     Forward = 1,
     Reverse = 2,
-    FLeft = 3,
-    FRight = 4,
+    Left = 3,
+    Right = 4,
 
 } RobotState;
 

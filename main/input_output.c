@@ -2,7 +2,7 @@
 
 
 
-char *robot_state_strings[] = {"Still", "Forward", "Reverse", "FLeft", "FRight"};
+char *robot_state_strings[] = {"Still", "Forward", "Reverse", "Left", "Right"};
 
 /*
     Returns current state from character
@@ -36,9 +36,9 @@ RobotState input_handling(char c) {
     case 's':
         return Reverse;
     case 'a':
-        return FLeft;
+        return Left;
     case 'd':
-        return FRight;
+        return Right;
     default:
         return Still;
     }

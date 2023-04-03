@@ -2,10 +2,10 @@
 
 
 
-char *robot_state_strings[] = {"Still", "Forward", "Reverse", "Left", "Right"};
+char *robot_command_strings[] = {"Still", "Forward", "Reverse", "Left", "Right"};
 
 /*
-    Returns current state from character
+    Returns current command from character
 */
 void init_monitor() {
     setvbuf(stdin, NULL, _IONBF, 0);
@@ -25,10 +25,10 @@ char read_from_monitor()
 }
 
 /* 
-    Returns current state from character 
+    Returns current command from character 
     Used on robot side 
 */
-RobotState input_handling(char c) {
+RobotCommand input_handling(char c) {
     switch (c)
     {
     case 'w':

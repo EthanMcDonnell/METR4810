@@ -29,13 +29,13 @@ typedef enum
     Left = 3,
     Right = 4,
 
-} RobotState;
+} RobotCommand;
 
 extern char read_from_monitor();
-extern char *robot_state_strings[];
+extern char *robot_command_strings[];
 
 extern void init_monitor();
 
-extern RobotState input_handling(char c);
+extern RobotCommand input_handling(char c);
 
 #endif

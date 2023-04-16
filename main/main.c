@@ -2,6 +2,7 @@
 #include <string.h>
 #include <inttypes.h>
 #include "freertos/FreeRTOS.h"
+#include "wireless_comms.h"
 #include "freertos/task.h"
 #include "esp_chip_info.h"
 #include "esp_flash.h"
@@ -19,6 +20,9 @@
 
 void app_main(void)
 {
+    // Code which sets up ESP32 as a server 
+    run_BLE_server();
+
     printf("Hello World it's Ethan\n");
     init_monitor();
     init_pwm();

@@ -2,16 +2,19 @@
  * SPDX-FileCopyrightText: 2021-2022 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
+ *
+ * Retrieved from https://github.com/espressif/esp-idf/tree/master/examples/peripherals/rmt/led_strip
  */
 #pragma once
 
-
+#include "driver/rmt_encoder.h"
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
+    
     /**
      * @brief Type of led strip encoder configuration
      */

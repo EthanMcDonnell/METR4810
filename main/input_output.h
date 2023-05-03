@@ -2,6 +2,7 @@
 #ifndef INPUT_OUTPUT_H
 #define INPUT_OUTPUT_H
 
+#include "board_interfacing.h"
 #include <stdio.h>
 #include "esp_vfs_dev.h"
 #include "esp_vfs_fat.h"
@@ -20,16 +21,7 @@
 #include "esp_system.h"
 #include "esp_console.h"
 
-/* States */
-typedef enum
-{
-    Still = 0,
-    Forward = 1,
-    Reverse = 2,
-    Left = 3,
-    Right = 4,
 
-} RobotCommand;
 
 extern char read_from_monitor();
 extern char *robot_command_strings[];

@@ -1,7 +1,5 @@
 
-#include "driver/ledc.h"
 #include "board_interfacing.h"
-#include "input_output.h"
 
 #define MOTOR_LEFT_GPIO1 8
 #define MOTOR_LEFT_GPIO2 7
@@ -101,9 +99,9 @@ void set_motor_gpio(int mode, int motor_identifier)
         update_pwm(MR2_PWM_INDEX, out[1] * MOTOR_RIGHT_SPEED);
     }
 }
-void set_motors(RobotCommand com)
+void set_motors(RobotCommand comm)
 {
-    switch (com)
+    switch (comm)
     {
     case Forward:
         set_motor_gpio(1, ML_IDENTIFIER);

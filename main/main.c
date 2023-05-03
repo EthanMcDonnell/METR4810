@@ -27,10 +27,10 @@ void app_main(void)
     while (1)
     {
         //char inputc = read_from_monitor(); // Pauses until reads char
-        //char inputc = 'w';
+        char inputc = 'w';
         
         robot_command = input_handling(inputc); // Finds robot command from given char
-        //set_motors(robot_command);              
+        set_motors(robot_command);              
         printf("%s\n", robot_command_strings[(int)robot_command]);// Print current command to terminal
         vTaskDelay(40 / portTICK_PERIOD_MS);                    //FreeRTOS delay
     }

@@ -15,6 +15,9 @@
 #include "driver/uart.h"
 #include "string.h"
 
+#include "board_interfacing.h"
+#include "input_output.h"
+
 #include "esp_gap_ble_api.h"
 #include "esp_gatts_api.h"
 #include "esp_bt_defs.h"
@@ -167,24 +170,34 @@ static const uint8_t  spp_heart_beat_ccc[2] = {0x00, 0x00};
 #endif
 
 // This is what the system is going to do when it receives data
-static void ProcessInput(char* data, size_t len){
+static void process_input(char* data, size_t len){
     uart_write_bytes(UART_NUM_0, "Received: ", 10);
     uart_write_bytes(UART_NUM_0, data, len);
     switch(*data){
         case('a'):
             uart_write_bytes(UART_NUM_0, "\nTurning anti-clockwise\n", 24);
+            printf("Left\n\n");
+            set_motors(Left);
             break;
         case('d'):
             uart_write_bytes(UART_NUM_0, "\nTurning clockwise\n", 19);
+            printf("Right\n\n");
+            set_motors(Right);
             break;
         case('w'):
             uart_write_bytes(UART_NUM_0, "\nGoing forwards\n", 16);
+            printf("Forward\n\n");
+            set_motors(Forward);
             break;
         case('s'):
             uart_write_bytes(UART_NUM_0, "\nGoing backwards\n", 17);
+            printf("Reverse\n\n");
+            set_motors(Reverse);
             break;
         case(' '):
             uart_write_bytes(UART_NUM_0, "\nStopping Movement\n", 19);
+            printf("Still\n\n");
+            set_motors(Still);
             break;
     }
 }
@@ -566,7 +579,7 @@ static void gatts_profile_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_
 #ifdef SPP_DEBUG_MODE
                     esp_log_buffer_char(GATTS_TABLE_TAG,(char *)(p_data->write.value),p_data->write.len);
 #else
-                    ProcessInput((char *)(p_data->write.value), p_data->write.len);
+                    process_input((char *)(p_data->write.value), p_data->write.len);
 #endif
                 }else{
                     //TODO:

@@ -24,18 +24,11 @@ void app_main(void)
     run_BLE_server();
 
     printf("Hello World it's Ethan\n");
-    init_monitor();
+    //init_monitor(); Dont Use
     init_pwm();
     xTaskCreate(led_task, "LED Task", 4096, NULL, 10, NULL); // Starts new LED FreeRTOS task
-    RobotCommand robot_command = Still;
     while (1)
     {
-        //char inputc = read_from_monitor(); // Pauses until reads char
-        char inputc = 'w';
-        
-        robot_command = input_handling(inputc); // Finds robot command from given char
-        //set_motors(robot_command);              
-        printf("%s\n", robot_command_strings[(int)robot_command]);// Print current command to terminal
         vTaskDelay(1000 / portTICK_PERIOD_MS);                    //FreeRTOS delay
     }
 }

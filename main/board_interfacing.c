@@ -3,8 +3,8 @@
 #include "board_interfacing.h"
 #include "input_output.h"
 
-#define MOTOR_LEFT_GPIO1 43
-#define MOTOR_LEFT_GPIO2 44
+#define MOTOR_LEFT_GPIO1 8
+#define MOTOR_LEFT_GPIO2 7
 #define MOTOR_RIGHT_GPIO1 35
 #define MOTOR_RIGHT_GPIO2 37
 

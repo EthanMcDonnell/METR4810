@@ -6,16 +6,18 @@
  * Retrieved from https://github.com/espressif/esp-idf/tree/master/examples/peripherals/rmt/led_strip
  */
 
-#include "esp_check.h"
-#include "driver/rmt_tx.h"
+#include "led_strip_encoder.h"
+
 #include <stdint.h>
-#include "driver/rmt_encoder.h"
+#include <string.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include <string.h>
+
+#include "driver/rmt_tx.h"
 #include "driver/rmt_encoder.h"
-#include "led_strip_encoder.h"
 #include "driver/gpio.h"
+
+#include "esp_check.h"
 
 #define RMT_LED_STRIP_RESOLUTION_HZ 10000000 // 10MHz resolution, 1 tick = 0.1us (led strip needs a high resolution)
 #define RMT_LED_STRIP_GPIO_NUM 18

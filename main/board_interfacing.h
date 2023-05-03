@@ -14,7 +14,7 @@ typedef enum
 
 } RobotCommand;
 
-void update_pwm();
+void update_pwm(int ledc_index, int val);
 void init_pwm();
 void set_motors(RobotCommand comm);
 

@@ -156,32 +156,35 @@ static const uint8_t  spp_heart_beat_ccc[2] = {0x00, 0x00};
 static void process_input(char* data, size_t len){
     uart_write_bytes(UART_NUM_0, "Received: ", 10);
     uart_write_bytes(UART_NUM_0, data, len);
-    switch(*data){
-        case('a'):
-            uart_write_bytes(UART_NUM_0, "\nTurning anti-clockwise\n", 24);
-            printf("Left\n");
-            set_motors(Left);
-            break;
-        case('d'):
-            uart_write_bytes(UART_NUM_0, "\nTurning clockwise\n", 19);
-            printf("Right\n");
-            set_motors(Right);
-            break;
-        case('w'):
-            uart_write_bytes(UART_NUM_0, "\nGoing forwards\n", 16);
-            printf("Forward\n");
-            set_motors(Forward);
-            break;
-        case('s'):
-            uart_write_bytes(UART_NUM_0, "\nGoing backwards\n", 17);
-            printf("Reverse\n");
-            set_motors(Reverse);
-            break;
-        case(' '):
-            uart_write_bytes(UART_NUM_0, "\nStopping Movement\n", 19);
-            printf("Still\n");
-            set_motors(Still);
-            break;
+    printf("Received: \n");
+    printf("%s\n", data);
+    switch (*data)
+    {
+    case ('a'):
+        uart_write_bytes(UART_NUM_0, "\nTurning anti-clockwise\n", 24);
+        printf("Left\n");
+        set_motors(Left);
+        break;
+    case ('d'):
+        uart_write_bytes(UART_NUM_0, "\nTurning clockwise\n", 19);
+        printf("Right\n");
+        set_motors(Right);
+        break;
+    case ('w'):
+        uart_write_bytes(UART_NUM_0, "\nGoing forwards\n", 16);
+        printf("Forward\n");
+        set_motors(Forward);
+        break;
+    case ('s'):
+        uart_write_bytes(UART_NUM_0, "\nGoing backwards\n", 17);
+        printf("Reverse\n");
+        set_motors(Reverse);
+        break;
+    case (' '):
+        uart_write_bytes(UART_NUM_0, "\nStopping Movement\n", 19);
+        printf("Still\n");
+        set_motors(Still);
+        break;
     }
 }
 
@@ -324,6 +327,7 @@ static void print_write_buffer(void)
 
     while(temp_spp_recv_data_node_p1 != NULL){
         uart_write_bytes(UART_NUM_0, (char *)(temp_spp_recv_data_node_p1->node_buff), temp_spp_recv_data_node_p1->len);
+        printf((char *)(temp_spp_recv_data_node_p1->node_buff));
         temp_spp_recv_data_node_p1 = temp_spp_recv_data_node_p1->next_node;
     }
 }
@@ -507,6 +511,8 @@ static void gatts_profile_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_
     uint8_t res = 0xff;
 
     //ESP_LOGI(GATTS_TABLE_TAG, "event = %x\n",event);
+    // printf("Event Handler: ");
+    // printf("%d\n",(int) event);
     switch (event) {
     	case ESP_GATTS_REG_EVT:
     	    ESP_LOGI(GATTS_TABLE_TAG, "%s %d\n", __func__, __LINE__);
@@ -568,13 +574,13 @@ static void gatts_profile_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_
                     //TODO:
                 }
             }else if((p_data->write.is_prep == true)&&(res == SPP_IDX_SPP_DATA_RECV_VAL)){
-                //ESP_LOGI(GATTS_TABLE_TAG, "ESP_GATTS_PREP_WRITE_EVT : handle = %d\n", res);
+                ESP_LOGI(GATTS_TABLE_TAG, "ESP_GATTS_PREP_WRITE_EVT : handle = %d\n", res);
                 store_wr_buffer(p_data);
             }
       	 	break;
     	}
     	case ESP_GATTS_EXEC_WRITE_EVT:{
-    	    //ESP_LOGI(GATTS_TABLE_TAG, "ESP_GATTS_EXEC_WRITE_EVT\n");
+    	    ESP_LOGI(GATTS_TABLE_TAG, "ESP_GATTS_EXEC_WRITE_EVT\n");
     	    if(p_data->exec_write.exec_write_flag){
     	        print_write_buffer();
     	        free_write_buffer();
@@ -583,7 +589,9 @@ static void gatts_profile_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_
     	}
     	case ESP_GATTS_MTU_EVT:
     	    spp_mtu_size = p_data->mtu.mtu;
-    	    break;
+            //printf("%d\n", (int)p_data->write.value);
+            //process_input((char *)(p_data->write.value), p_data->write.len);
+            break;
     	case ESP_GATTS_CONF_EVT:
     	    break;
     	case ESP_GATTS_UNREG_EVT:
@@ -652,7 +660,7 @@ static void gatts_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_t gatts_
         if (param->reg.status == ESP_GATT_OK) {
             spp_profile_tab[SPP_PROFILE_APP_IDX].gatts_if = gatts_if;
         } else {
-            //ESP_LOGI(GATTS_TABLE_TAG, "Reg app failed, app_id %04x, status %d\n",param->reg.app_id, param->reg.status);
+            ESP_LOGI(GATTS_TABLE_TAG, "Reg app failed, app_id %04x, status %d\n",param->reg.app_id, param->reg.status);
             return;
         }
     }
@@ -697,7 +705,7 @@ void run_BLE_server(void)
         return;
     }
 
-    ESP_LOGI(GATTS_TABLE_TAG, "%s init bluetooth\n", __func__);
+    //ESP_LOGI(GATTS_TABLE_TAG, "%s init bluetooth\n", __func__);
     ret = esp_bluedroid_init();
     if (ret) {
         ESP_LOGE(GATTS_TABLE_TAG, "%s init bluetooth failed: %s\n", __func__, esp_err_to_name(ret));

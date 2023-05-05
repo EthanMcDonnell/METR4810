@@ -6,11 +6,11 @@
 #define MOTOR_RIGHT_GPIO1 35
 #define MOTOR_RIGHT_GPIO2 37
 
-#define MOTOR_LEFT_SPEED 3000   // 0 to 2000 (NEEDS TESTING)
-#define MOTOR_RIGHT_SPEED 3000  // 0 to 2000 (NEEDS TESTING)
+#define MOTOR_LEFT_SPEED 2000   // 0 to 2000 (NEEDS TESTING)
+#define MOTOR_RIGHT_SPEED 2000  // 0 to 2000 (NEEDS TESTING)
 
-#define ML_IDENTIFIER 1
-#define MR_IDENTIFIER 0
+#define MOTOR_MAX_PWM 1000
+
 
 #define M_FORWARD 1             // Motor Identifier Forward
 #define M_REVERSE -1            // Motor Identifier Reverse
@@ -65,10 +65,10 @@ void init_pwm()
         ledc_channel_config(&ledc_channels[i]);
     }
 
-    update_pwm(ML1_PWM_INDEX, MOTOR_LEFT_SPEED);
-    update_pwm(ML2_PWM_INDEX, MOTOR_LEFT_SPEED);
-    update_pwm(MR1_PWM_INDEX, MOTOR_RIGHT_SPEED);
-    update_pwm(MR2_PWM_INDEX, MOTOR_RIGHT_SPEED);
+    update_pwm(ML1_PWM_INDEX, 0);
+    update_pwm(ML2_PWM_INDEX, 0);
+    update_pwm(MR1_PWM_INDEX, 0);
+    update_pwm(MR2_PWM_INDEX, 0);
 }
 
 /* 
@@ -110,6 +110,36 @@ void set_motor_pwm(int mode, int motor_identifier)
     {
         update_pwm(MR1_PWM_INDEX, out[0] * MOTOR_RIGHT_SPEED);
         update_pwm(MR2_PWM_INDEX, out[1] * MOTOR_RIGHT_SPEED);
+    }
+}
+
+void set_analog_motor_pwm(double value, int motor_identifier)
+{
+    int out[2] = {0, 0};
+    if (value > 0.4) //FORWARD
+    {
+        out[0] = 0;
+        out[1] = 1 * value * MOTOR_MAX_PWM;
+    }
+    else if (value < 0.4)
+    {
+        out[0] = 1 * -value * MOTOR_MAX_PWM;
+        out[1] = 0;
+    }
+    else
+    {
+        out[0] = 1;
+        out[1] = 1;
+    }
+    if (motor_identifier == ML_IDENTIFIER)
+    {
+        update_pwm(ML1_PWM_INDEX, out[0]);
+        update_pwm(ML2_PWM_INDEX, out[1]);
+    }
+    else if (motor_identifier == MR_IDENTIFIER)
+    {
+        update_pwm(MR1_PWM_INDEX, out[1]);
+        update_pwm(MR2_PWM_INDEX, out[0]);
     }
 }
 

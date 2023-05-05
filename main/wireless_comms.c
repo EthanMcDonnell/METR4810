@@ -164,28 +164,30 @@ static void process_input(char* data, size_t len){
         uart_write_bytes(UART_NUM_0, "\nTurning anti-clockwise\n", 24);
         printf("Left\n");
         set_motors(Left);
-        break;
+        return;
     case ('d'):
         uart_write_bytes(UART_NUM_0, "\nTurning clockwise\n", 19);
         printf("Right\n");
         set_motors(Right);
-        break;
+        return;
     case ('w'):
         uart_write_bytes(UART_NUM_0, "\nGoing forwards\n", 16);
         printf("Forward\n");
         set_motors(Forward);
-        break;
+        return;
     case ('s'):
         uart_write_bytes(UART_NUM_0, "\nGoing backwards\n", 17);
         printf("Reverse\n");
         set_motors(Reverse);
-        break;
+        return;
     case (' '):
         uart_write_bytes(UART_NUM_0, "\nStopping Movement\n", 19);
         printf("Still\n");
         set_motors(Still);
-        break;
+        return;
     }
+    // Must be controller data
+    read_controller_data(data);
 }
 
 
@@ -511,8 +513,8 @@ static void gatts_profile_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_
     uint8_t res = 0xff;
 
     //ESP_LOGI(GATTS_TABLE_TAG, "event = %x\n",event);
-    // printf("Event Handler: ");
-    // printf("%d\n",(int) event);
+    printf("Event Handler: ");
+    printf("%d\n",(int) event);
     switch (event) {
     	case ESP_GATTS_REG_EVT:
     	    ESP_LOGI(GATTS_TABLE_TAG, "%s %d\n", __func__, __LINE__);

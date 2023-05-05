@@ -19,6 +19,9 @@
 
 #include "board_interfacing.h"
 
+
+#include "controller_interfacing.h"
+
 #include "esp_gap_ble_api.h"
 #include "esp_gatts_api.h"
 #include "esp_bt_defs.h"

@@ -121,7 +121,7 @@ void set_analog_motor_pwm(double value, int motor_identifier)
         out[0] = 0;
         out[1] = 1 * value * MOTOR_MAX_PWM;
     }
-    else if (value < 0.4)
+    else if (value < -0.4)
     {
         out[0] = 1 * -value * MOTOR_MAX_PWM;
         out[1] = 0;

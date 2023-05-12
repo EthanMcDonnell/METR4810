@@ -2,7 +2,6 @@
 #include "freertos/task.h"
 #include "wireless_comms.h"
 #include "led_strip_encoder.h"
-#include "input_output.h"
 #include "board_interfacing.h"
 
 void app_main(void)

@@ -59,7 +59,6 @@ void init_pwm()
         ledc_channels[i].timer_sel = LEDC_TIMER_0;
         ledc_channel_config(&ledc_channels[i]);
     }
-
     update_pwm(ML1_PWM_INDEX, 0);
     update_pwm(ML2_PWM_INDEX, 0);
     update_pwm(MR1_PWM_INDEX, 0);
@@ -75,6 +74,9 @@ void configure_gpio(int gpio)
     gpio_set_direction(gpio, GPIO_MODE_OUTPUT);
 }
 
+/*
+    Set pwm of left or right motor to value
+*/
 void set_analog_motor_pwm(double value, int motor_identifier)
 {
     int out[2] = {0, 0};

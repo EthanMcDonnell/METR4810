@@ -1,7 +1,36 @@
 
-#include "input_output.h"
+#include <stdio.h>
+#include "esp_vfs_dev.h"
+#include "esp_vfs_fat.h"
+#include "driver/uart.h"
+#include "driver/gpio.h"
+#include <stdio.h>
+#include <string.h>
+#include <inttypes.h>
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "esp_chip_info.h"
+#include "esp_flash.h"
+#include "esp_log.h"
+#include "sdkconfig.h"
+#include "esp_system.h"
+#include "esp_console.h"
+/*
 
+    NOT USED 
 
+*/
+
+/* States */
+typedef enum
+{
+    Still = 0,
+    Forward = 1,
+    Reverse = 2,
+    Left = 3,
+    Right = 4,
+
+} RobotCommand;
 
 char *robot_command_strings[] = {"Still", "Forward", "Reverse", "Left", "Right"};
 

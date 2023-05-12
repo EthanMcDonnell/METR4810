@@ -157,37 +157,47 @@ static void process_input(char* data, size_t len){
     uart_write_bytes(UART_NUM_0, "Received: ", 10);
     uart_write_bytes(UART_NUM_0, data, len);
     printf("Received: \n");
-    printf("%s\n", data);
-    switch (*data)
-    {
-    case ('a'):
-        uart_write_bytes(UART_NUM_0, "\nTurning anti-clockwise\n", 24);
-        printf("Left\n");
-        set_motors(Left);
-        return;
-    case ('d'):
-        uart_write_bytes(UART_NUM_0, "\nTurning clockwise\n", 19);
-        printf("Right\n");
-        set_motors(Right);
-        return;
-    case ('w'):
-        uart_write_bytes(UART_NUM_0, "\nGoing forwards\n", 16);
-        printf("Forward\n");
-        set_motors(Forward);
-        return;
-    case ('s'):
-        uart_write_bytes(UART_NUM_0, "\nGoing backwards\n", 17);
-        printf("Reverse\n");
-        set_motors(Reverse);
-        return;
-    case (' '):
-        uart_write_bytes(UART_NUM_0, "\nStopping Movement\n", 19);
-        printf("Still\n");
-        set_motors(Still);
+    if((data == NULL) || (*data == '\0')){
+        printf("NULLLLLL\n");
         return;
     }
-    // Must be controller data
-    read_controller_data(data);
+    printf("HERE\n");
+    printf("%c\n", data[5]);
+    
+    // DELETE THIS 
+    // switch (*data)
+    // {
+    // case ('a'):
+    //     uart_write_bytes(UART_NUM_0, "\nTurning anti-clockwise\n", 24);
+    //     printf("Left\n");
+    //     set_motors(Left);
+    //     return;
+    // case ('d'):
+    //     uart_write_bytes(UART_NUM_0, "\nTurning clockwise\n", 19);
+    //     printf("Right\n");
+    //     set_motors(Right);
+    //     return;
+    // case ('w'):
+    //     uart_write_bytes(UART_NUM_0, "\nGoing forwards\n", 16);
+    //     printf("Forward\n");
+    //     set_motors(Forward);
+    //     return;
+    // case ('s'):
+    //     uart_write_bytes(UART_NUM_0, "\nGoing backwards\n", 17);
+    //     printf("Reverse\n");
+    //     set_motors(Reverse);
+    //     return;
+    // case (' '):
+    //     uart_write_bytes(UART_NUM_0, "\nStopping Movement\n", 19);
+    //     printf("Still\n");
+    //     set_motors(Still);
+    //     return;
+    // }
+    if(len < 200){
+        // Must be controller data
+        read_controller_data(data);
+    }
+
 }
 
 

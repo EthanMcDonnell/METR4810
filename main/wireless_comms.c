@@ -161,8 +161,7 @@ static void process_input(char* data, size_t len){
         printf("NULLLLLL\n");
         return;
     }
-    printf("HERE\n");
-    printf("%c\n", data[5]);
+    printf("%s\n", data);
     
     // DELETE THIS 
     // switch (*data)

@@ -8,17 +8,17 @@
 
 #define MOTOR_MAX_PWM 500
 
-#define M_FORWARD 1             // Motor Identifier Forward
-#define M_REVERSE -1            // Motor Identifier Reverse
-#define M_STILL 0               // Motor Identifier Still
-
 #define PWM_CHANNELS_NUM 5
-ledc_channel_config_t ledc_channels[PWM_CHANNELS_NUM]; // PWM channels
 #define ML1_PWM_INDEX 0
 #define ML2_PWM_INDEX 1
 #define MR1_PWM_INDEX 2
 #define MR2_PWM_INDEX 3
 #define LED_PWM_INDEX 4
+
+// PWM channels
+ledc_channel_config_t ledc_channels[PWM_CHANNELS_NUM];
+
+
 
 /* 
     Updates values of pwm
@@ -26,8 +26,10 @@ ledc_channel_config_t ledc_channels[PWM_CHANNELS_NUM]; // PWM channels
 */
 void update_pwm(int ledc_index, int val)
 {
-    ledc_set_duty(ledc_channels[ledc_index].speed_mode, ledc_channels[ledc_index].channel, val);
-    ledc_update_duty(ledc_channels[ledc_index].speed_mode, ledc_channels[ledc_index].channel);
+    ledc_set_duty(ledc_channels[ledc_index].speed_mode, 
+        ledc_channels[ledc_index].channel, val);
+    ledc_update_duty(ledc_channels[ledc_index].speed_mode, 
+        ledc_channels[ledc_index].channel);
 }
 
 /*
@@ -85,22 +87,24 @@ void set_analog_motor_pwm(double value, int motor_identifier)
         out[0] = 0;
         out[1] = 1 * value * MOTOR_MAX_PWM;
     }
-    else if (value < -0.4)
+    else if (value < -0.4) // Reverse
     {
         out[0] = 1 * -value * MOTOR_MAX_PWM;
         out[1] = 0;
     }
-    else
+    else // Still
     {
         out[0] = 1;
         out[1] = 1;
     }
-    if (motor_identifier == ML_IDENTIFIER)
+    // Update Left Motor
+    if (motor_identifier == ML_IDENTIFIER) 
     {
         update_pwm(ML1_PWM_INDEX, out[0]);
         update_pwm(ML2_PWM_INDEX, out[1]);
     }
-    else if (motor_identifier == MR_IDENTIFIER)
+    // Update Right Motor
+    else if (motor_identifier == MR_IDENTIFIER) 
     {
         update_pwm(MR1_PWM_INDEX, out[1]);
         update_pwm(MR2_PWM_INDEX, out[0]);

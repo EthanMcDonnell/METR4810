@@ -1,14 +1,14 @@
 
 
 #include "controller_interfacing.h"
-
+ 
 #define LEFT_VERT 1
 #define LEFT_HORI 0
 #define RIGHT_VERT 3
 #define RIGHT_HORI 2
 #define RIGHT_TRIGG 5
 #define LEFT_TRIGG 4
-double pwm_power_factor = 0;
+double pwm_power_factor = 1;
 
 /*
     Example data format: 0,0.027436140018921477,-0.027466658528397473,0,0.003906369212927641,-1,-1

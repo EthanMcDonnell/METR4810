@@ -8,9 +8,10 @@
 #define RIGHT_HORI 2
 #define RIGHT_TRIGG 5
 #define LEFT_TRIGG 4
-double pwm_power_factor = 1;
+double pwm_power_factor = 1.0;
 
 /*
+    Function to help read and deal with incoming controller data
     Example data format: 0,0.027436140018921477,-0.027466658528397473,0,0.003906369212927641,-1,-1
 */
 void read_controller_data(char* data){
@@ -28,10 +29,10 @@ void read_controller_data(char* data){
     double right_trigger = atof(controllerDataArray[RIGHT_TRIGG]);
 
     // Analog pwm increase implementation
-    if(left_trigger > 0.4) pwm_power_factor -= 0.1;
-    if(right_trigger > 0.4)pwm_power_factor += 0.1;
-    if(pwm_power_factor < 0) pwm_power_factor = 0;
-    if(pwm_power_factor > 1) pwm_power_factor = 1;
+    if(left_trigger > 0.4) pwm_power_factor -= 0.05;
+    if(right_trigger > 0.4)pwm_power_factor += 0.05;
+    if(pwm_power_factor < 0.0) pwm_power_factor = 0.0;
+    if(pwm_power_factor > 1.5) pwm_power_factor = 1.5;
 
     // Update pwm of motors
     set_analog_motor_pwm(left_vert * pwm_power_factor, 0);

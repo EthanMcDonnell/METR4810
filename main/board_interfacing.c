@@ -1,10 +1,10 @@
 
 #include "board_interfacing.h"
 
-#define MOTOR_LEFT_GPIO1 8
-#define MOTOR_LEFT_GPIO2 7
-#define MOTOR_RIGHT_GPIO1 35
-#define MOTOR_RIGHT_GPIO2 36
+#define MOTOR_LEFT_GPIO1 35
+#define MOTOR_LEFT_GPIO2 37
+#define MOTOR_RIGHT_GPIO1 34
+#define MOTOR_RIGHT_GPIO2 9
 
 #define MOTOR_MAX_PWM 500
 

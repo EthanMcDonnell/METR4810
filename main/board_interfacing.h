@@ -6,8 +6,14 @@
 #define ML_IDENTIFIER 1
 #define MR_IDENTIFIER 0
 
-void update_pwm(int ledc_index, int val);
+/*
+    Initialises all pwm pins needed
+*/
 void init_pwm();
+
+/*
+    Set pwm of left or right motor to value
+*/
 void set_analog_motor_pwm(double value, int motor_identifier);
 
 #endif

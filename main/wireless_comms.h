@@ -1,9 +1,7 @@
 /*
- * SPDX-FileCopyrightText: 2021 Espressif Systems (Shanghai) CO LTD
- *
- * SPDX-License-Identifier: Unlicense OR CC0-1.0
+ * The following SPP server code was adapted from the Espressif github which can be found at:
+ * https://github.com/espressif/esp-idf/tree/master/examples/bluetooth/bluedroid/ble/ble_spp_server
  */
-
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,7 +17,6 @@
 
 #include "board_interfacing.h"
 
-
 #include "controller_interfacing.h"
 
 #include "esp_gap_ble_api.h"
@@ -29,19 +26,18 @@
 
 /*
  * DEFINES
- ****************************************************************************************
  */
-//#define SUPPORT_HEARTBEAT
-//#define SPP_DEBUG_MODE
 
-#define spp_sprintf(s,...)         sprintf((char*)(s), ##__VA_ARGS__)
-#define SPP_DATA_MAX_LEN           (512)
-#define SPP_CMD_MAX_LEN            (20)
-#define SPP_STATUS_MAX_LEN         (20)
-#define SPP_DATA_BUFF_MAX_LEN      (2*1024)
+#define spp_sprintf(s, ...) sprintf((char *)(s), ##__VA_ARGS__)
+#define SPP_DATA_MAX_LEN (512)
+#define SPP_CMD_MAX_LEN (20)
+#define SPP_STATUS_MAX_LEN (20)
+#define SPP_DATA_BUFF_MAX_LEN (2 * 1024)
 void run_BLE_server();
-///Attributes State Machine
-enum{
+
+/// Attributes State Machine
+enum
+{
     SPP_IDX_SVC,
 
     SPP_IDX_SPP_DATA_RECV_CHAR,

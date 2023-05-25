@@ -3,26 +3,24 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  *
- * Retrieved from https://github.com/espressif/esp-idf/tree/master/examples/peripherals/rmt/led_strip
+ * Retrieved from https://github.com/espressif/
+ *      esp-idf/tree/master/examples/peripherals/rmt/led_strip
  */
 
-#include "esp_check.h"
-#include "driver/rmt_tx.h"
+#include "led_strip_encoder.h"
 #include <stdint.h>
-#include "driver/rmt_encoder.h"
+#include <string.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include <string.h>
+#include "driver/rmt_tx.h"
 #include "driver/rmt_encoder.h"
-#include "led_strip_encoder.h"
 #include "driver/gpio.h"
+#include "esp_check.h"
 
 #define RMT_LED_STRIP_RESOLUTION_HZ 10000000 // 10MHz resolution, 1 tick = 0.1us (led strip needs a high resolution)
 #define RMT_LED_STRIP_GPIO_NUM 18
-
 #define EXAMPLE_LED_NUMBERS 1
 #define EXAMPLE_CHASE_SPEED_MS 40
-
 #define LED_PWR_GPIO 17
 
 static uint8_t led_strip_pixels[EXAMPLE_LED_NUMBERS * 3];
@@ -207,7 +205,6 @@ void led_strip_hsv2rgb(uint32_t h, uint32_t s, uint32_t v, uint32_t *r, uint32_t
 
 void led_task()
 {
-    int led_pwm = 0;
     uint32_t red = 0;
     uint32_t green = 0;
     uint32_t blue = 0;

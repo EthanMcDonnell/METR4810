@@ -1,36 +1,40 @@
 
-#include "driver/ledc.h"
 #include "board_interfacing.h"
-#include "input_output.h"
 
-#define MOTOR_LEFT_GPIO1 8
-#define MOTOR_LEFT_GPIO2 7
-#define MOTOR_RIGHT_GPIO1 35
-#define MOTOR_RIGHT_GPIO2 37
+#define MOTOR_LEFT_GPIO1 35
+#define MOTOR_LEFT_GPIO2 37
+#define MOTOR_RIGHT_GPIO1 34
+#define MOTOR_RIGHT_GPIO2 9
 
-#define MOTOR_LEFT_SPEED 2000
-#define MOTOR_RIGHT_SPEED 1000
+#define MOTOR_MAX_PWM 500
 
-#define ML_IDENTIFIER 1
-#define MR_IDENTIFIER 0
-
+#define PWM_CHANNELS_NUM 5
 #define ML1_PWM_INDEX 0
 #define ML2_PWM_INDEX 1
 #define MR1_PWM_INDEX 2
 #define MR2_PWM_INDEX 3
 #define LED_PWM_INDEX 4
 
+// PWM channels
+ledc_channel_config_t ledc_channels[PWM_CHANNELS_NUM];
 
 
-#define PWM_CHANNELS_NUM 5
-ledc_channel_config_t ledc_channels[PWM_CHANNELS_NUM]; // PWM channels
 
+/* 
+    Updates values of pwm
+    Used for disabling pins as well
+*/
 void update_pwm(int ledc_index, int val)
 {
-    ledc_set_duty(ledc_channels[ledc_index].speed_mode, ledc_channels[ledc_index].channel, val);
-    ledc_update_duty(ledc_channels[ledc_index].speed_mode, ledc_channels[ledc_index].channel);
+    ledc_set_duty(ledc_channels[ledc_index].speed_mode, 
+        ledc_channels[ledc_index].channel, val);
+    ledc_update_duty(ledc_channels[ledc_index].speed_mode, 
+        ledc_channels[ledc_index].channel);
 }
 
+/*
+    Initialises all pwm pins needed
+*/
 void init_pwm()
 {
     ledc_timer_config_t ledc_timer = {
@@ -57,75 +61,52 @@ void init_pwm()
         ledc_channels[i].timer_sel = LEDC_TIMER_0;
         ledc_channel_config(&ledc_channels[i]);
     }
-
-    update_pwm(ML1_PWM_INDEX, MOTOR_LEFT_SPEED);
-    update_pwm(ML2_PWM_INDEX, MOTOR_LEFT_SPEED);
-    update_pwm(MR1_PWM_INDEX, MOTOR_RIGHT_SPEED);
-    update_pwm(MR2_PWM_INDEX, MOTOR_RIGHT_SPEED);
+    update_pwm(ML1_PWM_INDEX, 0);
+    update_pwm(ML2_PWM_INDEX, 0);
+    update_pwm(MR1_PWM_INDEX, 0);
+    update_pwm(MR2_PWM_INDEX, 0);
 }
 
-/* Sets gpio to input output*/
+/* 
+    Initialise gpio to input output
+*/
 void configure_gpio(int gpio)
 {
     gpio_reset_pin(gpio);
     gpio_set_direction(gpio, GPIO_MODE_OUTPUT);
 }
 
-// mode -1: Reverse, 0: still, 1: forward
-void set_motor_gpio(int mode, int motor_identifier)
+/*
+    Set pwm of left or right motor to value
+*/
+void set_analog_motor_pwm(double value, int motor_identifier)
 {
     int out[2] = {0, 0};
-    if (mode == 1)
+    if (value > 0.4) //FORWARD
     {
         out[0] = 0;
-        out[1] = 1;
+        out[1] = 1 * value * MOTOR_MAX_PWM;
     }
-    else if (mode == -1)
+    else if (value < -0.4) // Reverse
     {
-        out[0] = 1;
+        out[0] = 1 * -value * MOTOR_MAX_PWM;
         out[1] = 0;
     }
-    else if (mode == 0)
+    else // Still
     {
         out[0] = 1;
         out[1] = 1;
     }
-    if (motor_identifier == ML_IDENTIFIER)
+    // Update Left Motor
+    if (motor_identifier == ML_IDENTIFIER) 
     {
-        update_pwm(ML1_PWM_INDEX, out[0] * MOTOR_LEFT_SPEED);
-        update_pwm(ML2_PWM_INDEX, out[1] * MOTOR_LEFT_SPEED);
+        update_pwm(ML1_PWM_INDEX, out[0]);
+        update_pwm(ML2_PWM_INDEX, out[1]);
     }
-    else if (motor_identifier == MR_IDENTIFIER)
+    // Update Right Motor
+    else if (motor_identifier == MR_IDENTIFIER) 
     {
-        update_pwm(MR1_PWM_INDEX, out[0] * MOTOR_RIGHT_SPEED);
-        update_pwm(MR2_PWM_INDEX, out[1] * MOTOR_RIGHT_SPEED);
-    }
-}
-void set_motors(RobotCommand com)
-{
-    switch (com)
-    {
-    case Forward:
-        set_motor_gpio(1, ML_IDENTIFIER);
-        set_motor_gpio(1, MR_IDENTIFIER);
-        break;
-    case Reverse:
-        set_motor_gpio(-1, ML_IDENTIFIER);
-        set_motor_gpio(-1, MR_IDENTIFIER);
-        break;
-    case Left:
-        set_motor_gpio(-1, ML_IDENTIFIER);
-        set_motor_gpio(1, MR_IDENTIFIER);
-        break;
-    case Right:
-        set_motor_gpio(1, ML_IDENTIFIER);
-        set_motor_gpio(-1, MR_IDENTIFIER);
-        break;
-    case Still:
-        set_motor_gpio(0, ML_IDENTIFIER);
-        set_motor_gpio(0, MR_IDENTIFIER);
-        break;
-    default:
-        break;
+        update_pwm(MR1_PWM_INDEX, out[1]);
+        update_pwm(MR2_PWM_INDEX, out[0]);
     }
 }
